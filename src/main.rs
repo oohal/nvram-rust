@@ -15,12 +15,22 @@ named!(parse_pair<&[u8], KvPair>,
         v: take_until!(b"\0") ~ tag!(b"\0"),
         || {
             KvPair {key: k.to_vec(), value: v.to_vec()}
-        })
+        }
+    )
 );
+
+named!(parse_part_data<&[u8], Vec<KvPair> >,
+    fold_many0!(
+        parse_pair,
+        Vec::new(),
+        |mut acc: Vec<_>, item| { acc.push(item); acc}
+    )
+);
+
 
 fn main()
 {
-    let p = parse_pair(b"asdf=fdsa\0");
+    let p = parse_part_data(b"asdf=fdsa\0test1=test2\0");
 
     match p {
         IResult::Done(_, output)    => println!("Header: {:?} ", output),
