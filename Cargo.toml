@@ -1,0 +1,7 @@
+[package]
+name = "nvram"
+version = "0.1.0"
+authors = ["Oliver O'Halloran <oliver.ohalloran@uqconnect.edu.au>"]
+
+[dependencies]
+nom = "*"
